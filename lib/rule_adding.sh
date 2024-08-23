@@ -63,6 +63,3 @@ handle_services() {
     fi
 }
 
-handle_multi_ports() {
-    echo -e ""
-}

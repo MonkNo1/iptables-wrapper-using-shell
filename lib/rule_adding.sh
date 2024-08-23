@@ -15,7 +15,7 @@ handle_ip_traffic() {
             sudo iptables -A INPUT -s $specific_ip -j ${specific_ip_action^^}
             sudo iptables -A OUTPUT -d "$specific_ip" -j ${specific_ip_action^^}
 
-            echo "Rules added $sproto/$specific_ip => ${specific_ip_action^^} "
+            echo "${GREEN}Rules added $sproto/$specific_ip => ${specific_ip_action^^} ${RESET}"
             read -p "Do you want to add Another IP (y/n): " op
             if [[ "$op" == "n" || "$op" == "N" ]]; then
                 break
@@ -54,7 +54,7 @@ handle_services() {
 
             sudo iptables -A INPUT $protocol $port -j ${action^^}
 
-            echo "Rules added $proto/$port_input => ${action^^} "
+            echo "${GREEN}Rules added $proto/$port_input => ${action^^} ${RESET} "
             read -p "Do you want to add Another service (y/n): " op
             if [[ "$op" == "n" || "$op" == "N" ]]; then
                 break
@@ -63,3 +63,15 @@ handle_services() {
     fi
 }
 
+port_forwarding() {
+
+    local EXTERNAL_INTERFACE="$1"
+    read -p "Enter the Internal webserver Ip (xx.xx.xx.xx): " INTERNAL_SERVER_IP
+    read -p "Enter the Protocol the service going to Use (tcp/udp/all): " proto
+    read -p "Enter the Port of internal webserver (80): " port
+
+    sudo iptables -t nat -A PREROUTING -p $proto --dport $port -i $EXTERNAL_INTERFACE -j DNAT --to-destination $INTERNAL_SERVER_IP:$port
+    sudo iptables -A FORWARD -p $proto -d $INTERNAL_SERVER_IP --dport $port -j ACCEPT
+
+    echo -e "${GREEN}Rule Added $proto/$INTERNAL_SERVER_IP/$port ${RESET}"
+}

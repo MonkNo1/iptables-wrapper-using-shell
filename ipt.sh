@@ -31,6 +31,35 @@ basic $interface
 handle_ip_traffic
 handle_services
 
+while [ true ]; do
+    echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
+    echo -e "${BRIGHT_YELLOW}Menu${RESET}"
+    echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
+    echo -e "${BRIGHT_WHITE} 1.Add Ip rule${RESET}"
+    echo -e "${BRIGHT_WHITE} 2.Add service rule${RESET}"
+    echo -e "${BRIGHT_WHITE} 3.Quit${RESET}"
+    echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
+    echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-3]${RESET}: "
+    read choice
+    case $choice in
+    # Pattern 1
+    1)
+        echo "You have selected the option 1"
+        handle_ip_traffic
+        ;;
+    2)
+        echo "You have selected the option 2"
+        handle_services
+        ;;
+    3)
+        echo "Quitting ..."
+        # exit
+        break
+        ;;
+    *) echo "invalid option" ;;
+
+    esac
+done
 sudo iptables -L -v -n
 sudo iptables -F
 

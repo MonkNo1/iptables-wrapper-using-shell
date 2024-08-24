@@ -3,7 +3,7 @@
 source "lib/colors.sh"
 
 see_all_interfaces() {
-    echo "Avilable Devices : "
+    echo "Avilable Network interfaces : "
     ifconfig -a | sed 's/:$//' | awk '/^[a-zA-Z]/ { iface=$1 } /inet / { print "* " iface ": " $2 }'
 }
 # Optionally, ask user if they want to handle traffic from a specific IP
@@ -112,9 +112,62 @@ create_network_segments() {
     "DMZ")
         # DMZ rules (allow HTTP, deny all else)
         sudo iptables -A INPUT -i $MAN_INTERFACE -p tcp --d
+        #DMZ part ===>
         ;;
     *)
         echo -e "${RED} INVALID INPUT ${RESET}"
         ;;
     esac
+}
+
+View_rules() {
+    read -p "Enter Rule Table Name(Filter/NAT/MANGLE/RAW/SECURITY/ALL) : " table
+    case $(Action^^) in
+    "FILTER")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t filter
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    "NAT")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t nat
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    "MANGLE")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t mangle
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    "RAW")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t raw
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    "SECURITY")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t security
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    "ALL")
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        sudo iptables --line-number -vL -t filter
+        sudo iptables --line-number -vL -t nat
+        sudo iptables --line-number -vL -t mangle
+        sudo iptables --line-number -vL -t raw
+        sudo iptables --line-number -vL -t security
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    *)
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        echo -e "${BRIGHT_RED}INVALID COMMAND ${RESET}"
+        echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
+        ;;
+    esac
+}
+
+delete_rule() {
+    read -p "Enter the TABLE u want to delete (Filter/NAT/MANGLE/RAW/SECURITY/ALL): " Table
+    View_rules $Table
+
+    # sudo iptables
 }

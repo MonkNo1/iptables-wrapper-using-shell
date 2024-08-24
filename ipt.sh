@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source "lib/basic.sh"
-source "lib/rule_adding.sh"
+source "lib/rule_handling.sh"
 source "lib/colors.sh"
 
 # Default policies

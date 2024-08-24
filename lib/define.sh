@@ -8,3 +8,8 @@ option7="7.save IPTables rules"
 option8="8.Restart Iptables"
 option9="9.Quit"
 option10="10.Clear_screen"
+
+ruleop1="1.Load old Rules"
+ruleop2="2.Enter Rules manually"
+ruleop3="3.Add ip Rules"
+ruleop14="4.Add Service Rule"

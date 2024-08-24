@@ -10,8 +10,7 @@ LOOPBACK_POLICY="ACCEPT"
 
 interface=""
 
-echo "Avilable Devices : "
-ifconfig -a | sed 's/:$//' | awk '/^[a-zA-Z]/ { iface=$1 } /inet / { print "* " iface ": " $2 }'
+see_all_interfaces
 while [ true ]; do
     read -p "Enter The WAN interface name : " interface
     if ip link show "$interface" >/dev/null 2>&1; then
@@ -38,9 +37,11 @@ while [ true ]; do
     echo -e "${BRIGHT_WHITE} 1.Add Ip rule${RESET}"
     echo -e "${BRIGHT_WHITE} 2.Add service rule${RESET}"
     echo -e "${BRIGHT_WHITE} 3.port Forwarding${RESET}"
-    echo -e "${BRIGHT_WHITE} 4.save IPTables rules${RESET}"
-    echo -e "${BRIGHT_WHITE} 5.Restart Iptables${RESET}"
-    echo -e "${BRIGHT_WHITE} 6.Quit${RESET}"
+    echo -e "${BRIGHT_WHITE} 4.Create network segment${RESET}"
+    echo -e "${BRIGHT_WHITE} 5.See Avilable Interfaces ${RESET}"
+    echo -e "${BRIGHT_WHITE} 6.save IPTables rules${RESET}"
+    echo -e "${BRIGHT_WHITE} 7.Restart Iptables${RESET}"
+    echo -e "${BRIGHT_WHITE} 8.Quit${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-3]${RESET}: "
     read choice
@@ -59,18 +60,26 @@ while [ true ]; do
         ;;
     4)
         echo "You have selected the option 4"
+        create_network_segments
+        ;;
+    5)
+        echo "You have selected the option 4"
+        see_all_interfaces
+        ;;
+    6)
+        echo "You have selected the option 4"
         echo -e "${CYAN} SAVING RULES .... > rules.v4${RESET}"
         sudo iptables-save >rules.v4
         sudo iptables-save >/etc/iptables/rules.v4
         sudo systemctl restart iptables
         echo -e "${CYAN}Done..${RESET}"
         ;;
-    5)
+    7)
         echo "You have selected the option 5"
         echo -e "${BRIGHT_BLUE}Restart iptables ${RESET}"
         sudo systemctl restart iptables
         ;;
-    6)
+    8)
         echo "Quitting ..."
         # exit
         break

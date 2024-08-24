@@ -2,6 +2,10 @@
 
 source "lib/colors.sh"
 
+see_all_interfaces() {
+    echo "Avilable Devices : "
+    ifconfig -a | sed 's/:$//' | awk '/^[a-zA-Z]/ { iface=$1 } /inet / { print "* " iface ": " $2 }'
+}
 # Optionally, ask user if they want to handle traffic from a specific IP
 handle_ip_traffic() {
     echo -e "${YELLOW}Handle traffic from a specific IP: ${RESET}"
@@ -68,10 +72,49 @@ port_forwarding() {
     local EXTERNAL_INTERFACE="$1"
     read -p "Enter the Internal webserver Ip (xx.xx.xx.xx): " INTERNAL_SERVER_IP
     read -p "Enter the Protocol the service going to Use (tcp/udp/all): " proto
-    read -p "Enter the Port of internal webserver (80): " port
+    read -p "Enter the Port of internal webserver (8080): " port
+    read -p "Enter the NAT main server port(8080)" N_PORT
 
-    sudo iptables -t nat -A PREROUTING -p $proto --dport $port -i $EXTERNAL_INTERFACE -j DNAT --to-destination $INTERNAL_SERVER_IP:$port
+    sudo iptables -t nat -A PREROUTING -p $proto --dport $N_PORT -i $EXTERNAL_INTERFACE -j DNAT --to-destination $INTERNAL_SERVER_IP:$port
+    sudo iptables -t nat -A POSTROUTING -p $proto -d $INTERNAL_SERVER_IP --dport $port -j MASQUERADE
     sudo iptables -A FORWARD -p $proto -d $INTERNAL_SERVER_IP --dport $port -j ACCEPT
 
     echo -e "${GREEN}Rule Added $proto/$INTERNAL_SERVER_IP/$port ${RESET}"
+}
+
+create_network_segments() {
+
+    read -p "Network Segemnt Type (WAN/LAN/DMZ) : " Action
+
+    see_all_interfaces
+
+    while [ true ]; do
+        read -p "Enter the Network interface need to made into $Action : " MAN_INTERFACE
+        if ip link show "$MAN_INTERFACE" >/dev/null 2>&1; then
+            echo -e "${GREEN}Selected WAN interface : $MAN_INTERFACE ${RESET}"
+            break
+        else
+            echo -e "${RED} WRONG interface selected : $MAN_INTERFACE ${RESET}"
+        fi
+    done
+
+    case $Action in
+    "LAN")
+        # LAN rules (allow all outgoing and incoming)
+        sudo iptables -A INPUT -i $MAN_INTERFACE -j ACCEPT
+        sudo iptables -A OUTPUT -o $MAN_INTERFACE -j ACCEPT
+        ;;
+    "WAN")
+        # WAN rules (allow all outgoing, restrict incoming)
+        sudo iptables -A OUTPUT -o $MAN_INTERFACE -j ACCEPT
+        sudo iptables -A INPUT -i $MAN_INTERFACE -m state --state ESTABLISHED,RELATED -j ACCEPT
+        ;;
+    "DMZ")
+        # DMZ rules (allow HTTP, deny all else)
+        sudo iptables -A INPUT -i $MAN_INTERFACE -p tcp --d
+        ;;
+    *)
+        echo -e "${RED} INVALID INPUT ${RESET}"
+        ;;
+    esac
 }

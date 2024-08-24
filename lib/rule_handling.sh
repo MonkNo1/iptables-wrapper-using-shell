@@ -122,7 +122,7 @@ create_network_segments() {
 
 View_rules() {
     read -p "Enter Rule Table Name(Filter/NAT/MANGLE/RAW/SECURITY/ALL) : " table
-    case $(Action^^) in
+    case ${table^^} in
     "FILTER")
         echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
         sudo iptables --line-number -vL -t filter
@@ -163,6 +163,15 @@ View_rules() {
         echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
         ;;
     esac
+}
+
+load_rules() {
+    read -p "Enter the rule File location : " loca
+    if [ -e $loca ]; then
+        sudo iptables-restore <$loca
+    else
+        echo -e "${RED} INVALID LOCATION ${RESET}"
+    fi
 }
 
 delete_rule() {

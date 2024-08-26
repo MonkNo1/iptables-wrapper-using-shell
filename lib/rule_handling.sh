@@ -176,6 +176,14 @@ View_rules() {
 }
 
 load_rules() {
+    echo -e "do you want load rules from URL : " churl
+    if [ $churl=="Y" ] || [ $churl=="y" ]; then
+        read -p "URL : " url
+        curl "${url}" -o urlrule.v4
+        sudo iptables-restore <urlrule.v4
+        sudo rm urlrule.v4
+        return
+    fi
     read -p "Enter the rule File location : " loca
     if [ -e $loca ]; then
         echo -e "$(realpath "$loca")"

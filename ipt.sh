@@ -38,17 +38,9 @@ while [ true ]; do
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "${BRIGHT_YELLOW}Menu${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option1}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option2}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option3}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option4}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option5}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option6}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option7}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option8}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option9}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option10}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option11}${RESET}"
+    for option in "${options[@]}"; do
+        echo -e "${BRIGHT_WHITE} ${option}${RESET}"
+    done
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-10]${RESET}: "
     read choice

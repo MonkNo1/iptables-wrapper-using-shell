@@ -9,11 +9,9 @@ rule_mand() {
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         echo -e "${BRIGHT_YELLOW}Rule Mangement${RESET}"
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop1}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop2}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop3}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop4}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop5}${RESET}"
+        for option in "${ruleop[@]}"; do
+            echo -e "${BRIGHT_WHITE} ${option}${RESET}"
+        done
 
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         read choice
@@ -37,10 +35,10 @@ del_mand() {
     while [ true ]; do
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         echo -e "${BRIGHT_YELLOW}Rule Mangement${RESET}"
-        echo -e "${BRIGHT_WHITE} ${delop1}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${delop2}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${delop3}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${delop4}${RESET}"
+        for option in "${delop[@]}"; do
+            echo -e "${BRIGHT_WHITE} ${option}${RESET}"
+        done
+
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         read choice
         case $choice in

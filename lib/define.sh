@@ -1,22 +1,28 @@
-option1="1.Rule Managment"
-option2="2.port Forwarding"
-option3="3.Create network segment"
-option4="4.See Avilable Interfaces "
-option5="5.View Rules"
-option6="6.delete Rules"
-option7="7.Modify rules"
-option8="8.save IPTables rules"
-option9="9.Restart Iptables"
-option10="10.Quit"
-option11="11.Clear_screen"
+options=(
+    "1.Rule Management"
+    "2.Port Forwarding"
+    "3.Create Network Segment"
+    "4.See Available Interfaces"
+    "5.View Rules"
+    "6.Delete Rules"
+    "7.Modify Rules"
+    "8.Save IPTables Rules"
+    "9.Restart IPTables"
+    "10.Quit"
+    "11.Clear Screen"
+)
 
-ruleop1="1.Load old Rules"
-ruleop2="2.Enter Rules manually"
-ruleop3="3.Add ip Rules"
-ruleop4="4.Add Service Rule"
-ruleop5="5.Back"
+ruleop=(
+    "1.Load old Rules"
+    "2.Enter Rules Manually"
+    "3.Add IP Rules"
+    "4.Add Service Rule"
+    "5.Back"
+)
 
-delop1="1.Delete a rule By line"
-delop2="2.Delete a rule By specifications"
-delop3="3.Delete a rule manually(CUSTOM Rule) "
-delop4="4.Back"
+delop=(
+    "1.Delete a Rule By Line"
+    "2.Delete a Rule By Specifications"
+    "3.Delete a Rule Manually (CUSTOM Rule)"
+    "4.Back"
+)

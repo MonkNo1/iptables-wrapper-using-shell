@@ -173,16 +173,23 @@ View_rules() {
 load_rules() {
     read -p "Enter the rule File location : " loca
     if [ -e $loca ]; then
-        sudo iptables-restore <$loca
+        echo -e "$(realpath "$loca")"
+        read -p "Check the path of the File (y/n): " ch
+        if [ $ch=="Y" ] || [ $ch=="y" ]; then
+            # sudo iptables-restore <$loca
+            read -p "Do you want to flush and load rules (y/n) : " fl
+            if [ $fl=="Y" ] || [ $fl=="y" ]; then
+                sudo iptables -F
+                sudo iptables-restore <$loca
+            else
+                sudo iptables-restore <$loca
+            fi
+
+        else
+            break
+        fi
     else
         echo -e "${RED} INVALID LOCATION ${RESET}"
-    fi
-    read -p "Do you want to flush and load rules (y/n) : " fl
-    if [ $fl=="Y" ] || [ $fl=="y" ]; then
-        sudo iptables -F
-        sudo iptables-restore <$loca
-    else
-        sudo iptables-restore <$loca
     fi
 }
 

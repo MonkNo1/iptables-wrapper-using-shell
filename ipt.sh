@@ -4,6 +4,7 @@ source "lib/basic.sh"
 source "lib/rule_handling.sh"
 source "lib/colors.sh"
 source "lib/define.sh"
+source "lib/rule_management.sh"
 # Default policies
 DEFAULT_POLICY="DROP"
 LOOPBACK_POLICY="ACCEPT"
@@ -24,6 +25,7 @@ done
 
 # Flush iptables rules
 sudo iptables -F
+sudo iptables -t nat -F
 
 # wan_dev = $(select_dev)
 basic $interface
@@ -44,6 +46,7 @@ while [ true ]; do
     echo -e "${BRIGHT_WHITE} ${option7}${RESET}"
     echo -e "${BRIGHT_WHITE} ${option8}${RESET}"
     echo -e "${BRIGHT_WHITE} ${option9}${RESET}"
+    echo -e "${BRIGHT_WHITE} ${option10}${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-3]${RESET}: "
     read choice
@@ -69,6 +72,10 @@ while [ true ]; do
         View_rules
         ;;
     6)
+        echo "You have selected the option 6"
+        delete_rule
+        ;;
+    7)
         echo "You have selected the option 7"
         echo -e "${CYAN} SAVING RULES .... > rules.v4${RESET}"
         sudo iptables-save >rules.v4
@@ -76,15 +83,18 @@ while [ true ]; do
         sudo systemctl restart iptables
         echo -e "${CYAN}Done..${RESET}"
         ;;
-    7)
+    8)
         echo "You have selected the option 8"
         echo -e "${BRIGHT_BLUE}Restart iptables ${RESET}"
         sudo systemctl restart iptables
         ;;
-    8)
+    9)
         echo "Quitting ..."
         # exit
         break
+        ;;
+    10)
+        clear
         ;;
     *) echo "invalid option" ;;
     esac

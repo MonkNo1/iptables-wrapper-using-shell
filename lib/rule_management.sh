@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source "./define"
-source "./rule_handling"
+source "lib/define.sh"
+source "lib/rule_handling.sh"
 
 rule_mand() {
     clear
@@ -11,7 +11,10 @@ rule_mand() {
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         echo -e "${BRIGHT_WHITE} ${ruleop1}${RESET}"
         echo -e "${BRIGHT_WHITE} ${ruleop2}${RESET}"
-        echo -e "${BRIGHT_WHITE} ${ruleop1}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${ruleop3}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${ruleop4}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${ruleop5}${RESET}"
+
         echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
         read choice
         case $choice in

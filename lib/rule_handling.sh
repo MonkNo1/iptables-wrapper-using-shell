@@ -121,7 +121,12 @@ create_network_segments() {
 }
 
 View_rules() {
-    read -p "Enter Rule Table Name(Filter/NAT/MANGLE/RAW/SECURITY/ALL) : " table
+    if [[ $# -eq 1 ]]; then
+        table="$1"
+    else
+        read -p "Enter Rule Table Name(Filter/NAT/MANGLE/RAW/SECURITY/ALL) : " table
+
+    fi
     case ${table^^} in
     "FILTER")
         echo -e "${BRIGHT_YELLOW}***************************************************${RESET}"
@@ -193,8 +198,16 @@ Man_enter_rules() {
 }
 
 delete_rule() {
-    read -p "Enter the TABLE u want to delete (Filter/NAT/MANGLE/RAW/SECURITY/ALL): " Table
-    View_rules $Table
-
-    # sudo iptables
+    read -p "Enter the TABLE you want to delete (Filter/NAT/MANGLE/RAW/SECURITY/ALL): " Table
+    View_rules "$Table"
+    read -p "Enter Chain name to delete (eg: INPUT/OUTPUT): " chainn
+    read -p "Enter line number to delete: " linenum
+    Table=$(echo "$Table" | tr '[:upper:]' '[:lower:]')
+    rule="sudo iptables -t ${Table} -D ${chainn^^} ${linenum}"
+    echo "$rule"
+    if sh -c "$rule" >/dev/null 2>&1; then
+        echo -e "${GREEN}Deleted successfully.${RESET}"
+    else
+        echo -e "${RED}Error: Rule not deleted."
+    fi
 }

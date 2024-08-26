@@ -283,3 +283,19 @@ Man_delete() {
         echo "Error"
     fi
 }
+
+rule_modify() {
+    read -p "Enter the TABLE you want to modfiy (Filter/NAT/MANGLE/RAW/SECURITY/ALL): " Table
+    View_rules "$Table"
+    read -p "Enter Chain name to modify (eg: INPUT/OUTPUT): " chainn
+    read -p "Enter line number to modify: " linenum
+    Table=$(echo "$Table" | tr '[:upper:]' '[:lower:]')
+    read -p "Enter the modification should be done : " mod
+    rule="sudo iptables -t ${Table} -R ${chainn^^} ${linenum} ${mod}"
+    echo "$rule"
+    if sh -c "$rule" >/dev/null 2>&1; then
+        echo -e "${GREEN}modified successfully.${RESET}"
+    else
+        echo -e "${RED}Error: Rule not modified."
+    fi
+}

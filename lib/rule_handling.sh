@@ -209,11 +209,14 @@ load_rules() {
 Man_enter_rules() {
     echo -e "${BRIGHT_BLUE}Enter the Full Rule${RESET}"
     read manrul
-    # sh -c "$command"
-    if sh -c "$manrul" 2>&1 >/dev/null; then
-        echo "Rule Added"
+    if echo "$manrul" | grep -Eq '[;&|<>`$()]'; then
+        echo -e "${RED}Invalid input detected. Please enter a valid iptables rule.${RESET}"
     else
-        echo "Error"
+        if sh -c "$manrul" 2>&1 >/dev/null; then
+            echo "Rule Added"
+        else
+            echo "Error"
+        fi
     fi
 }
 
@@ -285,10 +288,14 @@ delete_rule_spec() {
 Man_delete() {
     echo -e "${BRIGHT_BLUE}Enter the Custom RULE to Delete ${RESET}"
     read manrul
-    if sh -c "$manrul" 2>&1 >/dev/null; then
-        echo "Rule Deleted"
+    if echo "$manrul" | grep -Eq '[;&|<>`$()]'; then
+        echo -e "${RED}Invalid input detected. Please enter a valid iptables rule.${RESET}"
     else
-        echo "Error"
+        if sh -c "$manrul" 2>&1 >/dev/null; then
+            echo "Rule Deleted"
+        else
+            echo "Error"
+        fi
     fi
 }
 

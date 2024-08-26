@@ -31,3 +31,24 @@ rule_mand() {
         esac
     done
 }
+
+del_mand() {
+    clear
+    while [ true ]; do
+        echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
+        echo -e "${BRIGHT_YELLOW}Rule Mangement${RESET}"
+        echo -e "${BRIGHT_WHITE} ${delop1}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${delop2}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${delop3}${RESET}"
+        echo -e "${BRIGHT_WHITE} ${delop4}${RESET}"
+        echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
+        read choice
+        case $choice in
+        1) delete_rule_line ;;
+        2) delete_rule_spec ;;
+        3) Man_delete ;;
+        4) break ;;
+        *) echo -e "${RED} INVALID COMMAND ${RESET}" ;;
+        esac
+    done
+}

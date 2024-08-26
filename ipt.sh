@@ -34,6 +34,7 @@ handle_services
 clear
 
 while [ true ]; do
+    # clear
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "${BRIGHT_YELLOW}Menu${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
@@ -48,7 +49,7 @@ while [ true ]; do
     echo -e "${BRIGHT_WHITE} ${option9}${RESET}"
     echo -e "${BRIGHT_WHITE} ${option10}${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
-    echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-3]${RESET}: "
+    echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-10]${RESET}: "
     read choice
     case $choice in
     1)
@@ -73,7 +74,8 @@ while [ true ]; do
         ;;
     6)
         echo "You have selected the option 6"
-        delete_rule
+        #
+        del_mand
         ;;
     7)
         echo "You have selected the option 7"

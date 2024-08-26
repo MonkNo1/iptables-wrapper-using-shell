@@ -15,11 +15,16 @@ handle_ip_traffic() {
             read -p "Enter the IP address: " specific_ip
             read -p "Do you want to accept or drop traffic from this IP? (ACCEPT/DROP): " specific_ip_action
             read -p "Protocol of service : (tcp/udp): " sproto
+            if [ "$sproto" == "ALL" ] || [ "$sproto" == "all" ]; then
+                protocol="-p all"
+            else
+                protocol="-p $sproto"
+            fi
+            echo "sudo iptables -A INPUT $protocol -s $specific_ip -j ${specific_ip_action^^}"
+            sudo iptables -A INPUT $protocol -s $specific_ip -j ${specific_ip_action^^}
+            sudo iptables -A OUTPUT $protocol -d "$specific_ip" -j ${specific_ip_action^^}
 
-            sudo iptables -A INPUT -s $specific_ip -j ${specific_ip_action^^}
-            sudo iptables -A OUTPUT -d "$specific_ip" -j ${specific_ip_action^^}
-
-            echo "${GREEN}Rules added $sproto/$specific_ip => ${specific_ip_action^^} ${RESET}"
+            echo -e "${GREEN}Rules added $sproto/$specific_ip => ${specific_ip_action^^} ${RESET}"
             read -p "Do you want to add Another IP (y/n): " op
             if [[ "$op" == "n" || "$op" == "N" ]]; then
                 break
@@ -204,7 +209,7 @@ Man_enter_rules() {
     fi
 }
 
-delete_rule() {
+delete_rule_line() {
     read -p "Enter the TABLE you want to delete (Filter/NAT/MANGLE/RAW/SECURITY/ALL): " Table
     View_rules "$Table"
     read -p "Enter Chain name to delete (eg: INPUT/OUTPUT): " chainn
@@ -216,5 +221,65 @@ delete_rule() {
         echo -e "${GREEN}Deleted successfully.${RESET}"
     else
         echo -e "${RED}Error: Rule not deleted."
+    fi
+}
+
+delete_rule_spec() {
+    read -p "Enter the TABLE (Filter/NAT/MANGLE/RAW/SECURITY): " table
+    View_rules "$table"
+    read -p "Enter Chain name (e.g., INPUT/OUTPUT/FORWARD): " chain
+    read -p "Enter Protocol (e.g., tcp/udp/icmp): " protocol
+    read -p "Enter Source IP (leave blank for any): " src_ip
+    read -p "Enter Destination IP (leave blank for any): " dest_ip
+    read -p "Enter Source Port (leave blank for any): " src_port
+    read -p "Enter Destination Port (leave blank for any): " dest_port
+    read -p "Enter Action u need to delete(ACCEPT/DROP/DENY): " action
+
+    table=$(echo "$table" | tr '[:upper:]' '[:lower:]')
+    chain=$(echo "$chain" | tr '[:lower:]' '[:upper:]')
+
+    rule="sudo iptables -t $table -D $chain"
+
+    # Add protocol
+    if [ -n "$protocol" ]; then
+        rule="$rule -p $protocol"
+    fi
+
+    # Add source IP
+    if [ -n "$src_ip" ]; then
+        rule="$rule --source $src_ip"
+    fi
+
+    # Add destination IP
+    if [ -n "$dest_ip" ]; then
+        rule="$rule -d $dest_ip"
+    fi
+
+    # Add source port
+    if [ -n "$src_port" ]; then
+        rule="$rule --sport $src_port"
+    fi
+
+    # Add destination port
+    if [ -n "$dest_port" ]; then
+        rule="$rule --dport $dest_port"
+    fi
+
+    rule="$rule -j ${action^^}"
+    echo "Executing: $rule"
+    if sh -c "$rule" >/dev/null 2>&1; then
+        echo -e "${GREEN}Rule deleted successfully.${RESET}"
+    else
+        echo -e "${RED}Error: Rule not deleted. Ensure the rule exists and the specifications are correct.${RESET}"
+    fi
+}
+
+Man_delete() {
+    echo -e "${BRIGHT_BLUE}Enter the Custom RULE to Delete ${RESET}"
+    read manrul
+    if sh -c "$manrul" 2>&1 >/dev/null; then
+        echo "Rule Deleted"
+    else
+        echo "Error"
     fi
 }

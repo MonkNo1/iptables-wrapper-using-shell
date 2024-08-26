@@ -14,3 +14,8 @@ ruleop2="2.Enter Rules manually"
 ruleop3="3.Add ip Rules"
 ruleop4="4.Add Service Rule"
 ruleop5="5.Back"
+
+delop1="1.Delete a rule By line"
+delop2="2.Delete a rule By specifications"
+delop3="3.Delete a rule manually(CUSTOM Rule) "
+delop4="4.Back"

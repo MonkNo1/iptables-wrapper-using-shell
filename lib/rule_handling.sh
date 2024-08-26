@@ -172,6 +172,24 @@ load_rules() {
     else
         echo -e "${RED} INVALID LOCATION ${RESET}"
     fi
+    read -p "Do you want to flush and load rules (y/n) : " fl
+    if [ $fl=="Y" ] || [ $fl=="y" ]; then
+        sudo iptables -F
+        sudo iptables-restore <$loca
+    else
+        sudo iptables-restore <$loca
+    fi
+}
+
+Man_enter_rules() {
+    echo -e "${BRIGHT_BLUE}Enter the Full Rule${RESET}"
+    read manrul
+    # sh -c "$command"
+    if sh -c "$manrul" 2>&1 >/dev/null; then
+        echo "Rule Added"
+    else
+        echo "Error"
+    fi
 }
 
 delete_rule() {

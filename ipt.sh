@@ -43,36 +43,32 @@ while [ true ]; do
     echo -e "${BRIGHT_WHITE} ${option6}${RESET}"
     echo -e "${BRIGHT_WHITE} ${option7}${RESET}"
     echo -e "${BRIGHT_WHITE} ${option8}${RESET}"
-    echo -e "${BRIGHT_WHITE} ${option90}${RESET}"
+    echo -e "${BRIGHT_WHITE} ${option9}${RESET}"
     echo -e "${BRIGHT_MAGENTA}********************************************************${RESET}"
     echo -e "Enter your menu choice ${BRIGHT_MAGENTA}[1-3]${RESET}: "
     read choice
     case $choice in
     1)
         echo "You have selected the option 1"
-        handle_ip_traffic
+        rule_mand
         ;;
     2)
-        echo "You have selected the option 2"
-        handle_services
-        ;;
-    3)
         echo "You have selected the option 3"
         port_forwarding $interface
         ;;
-    4)
+    3)
         echo "You have selected the option 4"
         create_network_segments
         ;;
-    5)
+    4)
         echo "You have selected the option 5"
         see_all_interfaces
         ;;
-    6)
+    5)
         echo "You have selected the option 6"
         View_rules
         ;;
-    7)
+    6)
         echo "You have selected the option 7"
         echo -e "${CYAN} SAVING RULES .... > rules.v4${RESET}"
         sudo iptables-save >rules.v4
@@ -80,12 +76,12 @@ while [ true ]; do
         sudo systemctl restart iptables
         echo -e "${CYAN}Done..${RESET}"
         ;;
-    8)
+    7)
         echo "You have selected the option 8"
         echo -e "${BRIGHT_BLUE}Restart iptables ${RESET}"
         sudo systemctl restart iptables
         ;;
-    9)
+    8)
         echo "Quitting ..."
         # exit
         break

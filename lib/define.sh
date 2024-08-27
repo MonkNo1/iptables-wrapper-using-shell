@@ -1,7 +1,7 @@
 options=(
     "1.Rule Management"
     "2.Port Forwarding"
-    "3.Create Network Segment"
+    "3.Create Network Segmen(comming soon!!)t"
     "4.See Available Interfaces"
     "5.View Rules"
     "6.Delete Rules"

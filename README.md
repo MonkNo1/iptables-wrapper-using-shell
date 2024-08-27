@@ -1,4 +1,4 @@
-#** IPTables-wrapper-sh**
+# ** IPTables-wrapper-sh**
 # IPTables Shell Script Wrapper
 
 This shell script provides an interactive, menu-based terminal user interface (TUI) for managing IPTables. Designed to be simple, user-friendly, and secure, it allows users to manage firewall rules, port forwarding, and network segments efficiently.

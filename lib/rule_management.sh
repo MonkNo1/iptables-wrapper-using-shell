@@ -23,7 +23,7 @@ rule_mand() {
             Man_enter_rules
             ;;
         3) handle_ip_traffic ;;
-        4) handle_services ;;
+        4) service_handling ;;
         5) break ;;
         *) echo -e "${RED} INVALID COMMAND" ;;
         esac

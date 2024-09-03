@@ -314,3 +314,44 @@ rule_modify() {
         echo -e "${RED}Error: Rule not modified."
     fi
 }
+
+service_handl() {
+    service=$1
+    prt=$2
+    echo -e "${YELLOW}Set default policy for ${service} service : ${RESET}"
+    read -p "ACCEPT/DROP: " default_policy_input
+    read -p "Do you want to Change Port for policy (N for default => Default port ${prt} ): " port
+    if [ $port == 'n' ] || [ $port == 'N' ]; then
+        $port = $prt
+    fi
+
+    if [ -z "${default_policy_input}" ]; then
+        default_policy_input="ACCEPT"
+    else
+        default_policy_input="DROP"
+    fi
+
+    sudo iptables -A INPUT -p tcp --dports ${port} -j ${default_policy_input^^}
+    sudo iptables -A OUTPUT -p tcp --dports ${port} -j ${default_policy_input^^}
+
+    echo -e "${GREEN}Rules added ${service} => ${default_policy_input^^} ${RESET} "
+}
+
+service_sftp() {
+    prt=22
+    echo -e "${YELLOW}Set default policy for SFTP service : ${RESET}"
+    read -p "ACCEPT/DROP: " default_policy_input
+    read -p "Do you want to Change Port for policy (N for default => Default port 22 ): " port
+    if [ $port == 'n' ] || [ $port == 'N' ]; then
+        $port = $prt
+    fi
+
+    if [ -z "${default_policy_input}" ]; then
+        default_policy_input="ACCEPT"
+    else
+        default_policy_input="DROP"
+    fi
+
+    sudo iptables -A INPUT -p tcp --dport ${port} -m string --string "sftp" --algo bm -j ${default_policy_input}
+    sudo iptables -A INPUT -p tcp --dport ${port} -m string --string "subsystem" --algo bm -j ${default_policy_input}
+}

@@ -20,6 +20,24 @@ ruleop=(
     "5.Back"
 )
 
+serop=(
+    "1.HTTP"
+    "2.HTTPS"
+    "3.SSH"
+    "4.FTP"
+    "5.SFTP"
+    "6.SMTP"
+    "7.POP"
+    "8.IMAP"
+    "9.telnet"
+    "10.DNS"
+    "11.TFTP"
+    "12.WIN RPC"
+    "13.WIN NETBIOS"
+    "14.Manual Service rule"
+    "14.BACK"
+)
+
 delop=(
     "1.Delete a Rule By Line"
     "2.Delete a Rule By Specifications"

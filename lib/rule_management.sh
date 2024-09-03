@@ -2,6 +2,7 @@
 
 source "lib/define.sh"
 source "lib/rule_handling.sh"
+source "lib/service_management.sh"
 
 rule_mand() {
     clear

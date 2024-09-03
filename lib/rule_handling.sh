@@ -321,8 +321,10 @@ service_handl() {
     echo -e "${YELLOW}Set default policy for ${service} service : ${RESET}"
     read -p "ACCEPT/DROP: " default_policy_input
     read -p "Do you want to Change Port for policy (N for default => Default port ${prt} ): " port
-    if [ $port == 'n' ] || [ $port == 'N' ]; then
-        $port = $prt
+    if [ "${port}" == "n" ] || [ "${port}" == "N" ]; then
+        port=$prt
+        # echo -e "${YELLOW} ${port} ${RESET}"
+
     fi
 
     if [ -z "${default_policy_input}" ]; then
@@ -331,8 +333,8 @@ service_handl() {
         default_policy_input="DROP"
     fi
 
-    sudo iptables -A INPUT -p tcp --dports ${port} -j ${default_policy_input^^}
-    sudo iptables -A OUTPUT -p tcp --dports ${port} -j ${default_policy_input^^}
+    sudo iptables -A INPUT -p tcp --dport ${port} -j ${default_policy_input^^}
+    sudo iptables -A OUTPUT -p tcp --dport ${port} -j ${default_policy_input^^}
 
     echo -e "${GREEN}Rules added ${service} => ${default_policy_input^^} ${RESET} "
 }
@@ -342,8 +344,9 @@ service_sftp() {
     echo -e "${YELLOW}Set default policy for SFTP service : ${RESET}"
     read -p "ACCEPT/DROP: " default_policy_input
     read -p "Do you want to Change Port for policy (N for default => Default port 22 ): " port
-    if [ $port == 'n' ] || [ $port == 'N' ]; then
-        $port = $prt
+    if [ "${port}" == "n" ] || [ "${port}" == "N" ]; then
+        port=$prt
+        # echo -e "${YELLOW} ${port} ${RESET}"
     fi
 
     if [ -z "${default_policy_input}" ]; then
@@ -354,4 +357,6 @@ service_sftp() {
 
     sudo iptables -A INPUT -p tcp --dport ${port} -m string --string "sftp" --algo bm -j ${default_policy_input}
     sudo iptables -A INPUT -p tcp --dport ${port} -m string --string "subsystem" --algo bm -j ${default_policy_input}
+    echo -e "${GREEN}Rules added SFTP => ${default_policy_input^^} ${RESET} "
+
 }
